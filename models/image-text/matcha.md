@@ -2,7 +2,7 @@
 
 ## Model description
 
-Image encoder and text decoder. Initialized from pix2struct checkpoint. Does much better than Donut and pix2struct on ChartQA and PlotQA.
+Image encoder and text decoder. Initialized from pix2struct checkpoint. Does much better than Donut and pix2struct on ChartQA and PlotQA. MatCha does better than pix2struct on some pix2struct tasks. SoTA as of end of 2022.
 
 ### From page 2:
 
@@ -10,13 +10,15 @@ Image encoder and text decoder. Initialized from pix2struct checkpoint. Does muc
 
 ## Pre-Training
 
+40% chart de-rendering, 40% math reasoning, 20% screenshot parsing (like pix2struct) (page 4, section 4.1). 100k steps at bs 512. 
+
 ### Chart de-rendering
 
-Given a chart, generate the data into a table or the code used to create the chart.
+Given a chart, generate the data into a table or the code used to create the chart. When dropping the code portion as a pre-training task, the model's performance dropped (page 8)
 
 ### Math reasoning
 
-A huge dataset of problems like this:
+MATH: A huge (millions) dataset of problems like this
 
 ```text
 'question': "b'Solve -282*d + 929 - 178 = -1223 for d.\\n'"
@@ -25,6 +27,14 @@ A huge dataset of problems like this:
 ```
 
 Problems are for algebra, calculus, trigonometry, geometry, etc.
+
+DROP: 96k QA pairs
+
+
+## Beware
+
+There are no token inputs to the model. To prompt it, the text must be rendered and placed on the image.
+
 
 ## Links
 
